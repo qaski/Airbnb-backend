@@ -2,6 +2,7 @@ package edu.uts.airbnb.Controller;
 import edu.uts.airbnb.Models.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import edu.uts.airbnb.Repository.PropertyRepository;
 
-@RequestMapping("/api")
+@RequestMapping("/api/properties")
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 
@@ -20,7 +21,8 @@ public class PropertyController {
     @Autowired
     PropertyRepository propertyRepository;
 
-    @PostMapping(value="/properties",consumes = {"application/json"})
+    @PostMapping(value="/",consumes = {"application/json"})
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Property> createProperty(@RequestBody Property property) {
         try {
             Property _property = propertyRepository
@@ -28,6 +30,18 @@ public class PropertyController {
             return new ResponseEntity<>(_property, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Property> getPropertyById(@PathVariable("id") long id) {
+        Optional<Property> propertyData = propertyRepository.findById(id);
+
+        if (propertyData.isPresent()) {
+            return new ResponseEntity<>(propertyData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
