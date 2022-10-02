@@ -21,7 +21,7 @@ public class PropertyController {
     @Autowired
     PropertyRepository propertyRepository;
 
-    @PostMapping(value="/",consumes = {"application/json"})
+    @PostMapping(value="/",consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Property> createProperty(@RequestBody Property property) {
         try {
@@ -44,6 +44,23 @@ public class PropertyController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<List<Property>> getAll() {
+        try {
+            List<Property> properties = new ArrayList<Property>();
+
+            propertyRepository.findAll().forEach(properties::add);
+
+            if (properties.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(properties, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
 
 
