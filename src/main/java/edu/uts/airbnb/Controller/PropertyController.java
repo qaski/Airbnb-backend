@@ -59,7 +59,7 @@ public class PropertyController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
@@ -68,6 +68,21 @@ public class PropertyController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Property> updateTutorial(@PathVariable("id") long id, @RequestBody Property property) {
+        Optional<Property> data = propertyRepository.findById(id);
+
+        if (data.isPresent()) {
+            Property _property = data.get();
+            _property.setTitle(property.getTitle());
+            _property.setDescription(property.getDescription());
+            _property.setPublished(property.isPublished());
+            return new ResponseEntity<>(propertyRepository.save(_property), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
