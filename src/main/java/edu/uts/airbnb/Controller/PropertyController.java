@@ -45,6 +45,7 @@ public class PropertyController {
         }
     }
 
+    @GetMapping("/")
     public ResponseEntity<List<Property>> getAll() {
         try {
             List<Property> properties = new ArrayList<Property>();
@@ -72,7 +73,7 @@ public class PropertyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Property> updateTutorial(@PathVariable("id") long id, @RequestBody Property property) {
+    public ResponseEntity<Property> update(@PathVariable("id") long id, @RequestBody Property property) {
         Optional<Property> data = propertyRepository.findById(id);
 
         if (data.isPresent()) {
