@@ -7,4 +7,6 @@ import  edu.uts.airbnb.Models.Property;
 
 public interface PropertyRepository extends  JpaRepository<Property, Long> {
     List<Property> findByPublished(boolean published);
+
+    List<Property> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String description);
 }
