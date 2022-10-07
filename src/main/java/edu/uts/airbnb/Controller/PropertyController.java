@@ -1,5 +1,6 @@
 package edu.uts.airbnb.Controller;
 import edu.uts.airbnb.Models.Property;
+import edu.uts.airbnb.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,7 +46,16 @@ public class PropertyController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Property> editProperty(@PathVariable("id") long id, @RequestBody Property property){
+        Property propertyData = propertyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Property", "id", id));
 
+        propertyData.setTitle(property.getTitle());
+        propertyData.setDescription(property.getDescription());
 
+        Property saveProperty = propertyRepository.save(propertyData);
 
+        return new ResponseEntity<>(saveProperty, HttpStatus.OK);
+    }
 }
