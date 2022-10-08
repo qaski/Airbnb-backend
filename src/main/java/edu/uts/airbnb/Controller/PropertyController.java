@@ -21,7 +21,7 @@ public class PropertyController {
     @Autowired
     PropertyRepository propertyRepository;
 
-    @PostMapping(value="/",consumes = {"application/json"})
+    @PostMapping(value="/",consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Property> createProperty(@RequestBody Property property) {
         try {
@@ -45,7 +45,47 @@ public class PropertyController {
         }
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Property>> getAll() {
+        try {
+            List<Property> properties = new ArrayList<Property>();
 
+            propertyRepository.findAll().forEach(properties::add);
+
+            if (properties.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(properties, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
+        try {
+            propertyRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Property> update(@PathVariable("id") long id, @RequestBody Property property) {
+        Optional<Property> data = propertyRepository.findById(id);
+
+        if (data.isPresent()) {
+            Property _property = data.get();
+            _property.setTitle(property.getTitle());
+            _property.setDescription(property.getDescription());
+            _property.setPublished(property.isPublished());
+            return new ResponseEntity<>(propertyRepository.save(_property), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
