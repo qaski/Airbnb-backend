@@ -11,15 +11,22 @@ import java.util.List;
 import java.util.Optional;
 import edu.uts.airbnb.Repository.PropertyRepository;
 
+import javax.swing.text.html.parser.Entity;
+
 @RequestMapping("/api/properties")
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 
 public class PropertyController {
-
-
     @Autowired
     PropertyRepository propertyRepository;
+
+    @GetMapping(value = "/")
+    public ResponseEntity<List<Property>> getProperties(){
+        List<Property> properties = propertyRepository.findAll();
+
+        return new ResponseEntity<>(properties, HttpStatus.OK);
+    }
 
     @PostMapping(value="/",consumes = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
@@ -44,8 +51,5 @@ public class PropertyController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
-
 
 }
