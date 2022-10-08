@@ -18,6 +18,11 @@ public class SearchController {
 
     @GetMapping(value = "/")
     public ResponseEntity<List<Property>> searchByTitle(@RequestParam String q){
+
+        if (q.isBlank()) {
+            List<Property> properties = propertyRepository.findAll();
+        }
+
         List<Property> properties = propertyRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q, q);
 
         return new ResponseEntity<>(properties, HttpStatus.OK);
