@@ -13,7 +13,7 @@ import java.util.Optional;
 import edu.uts.airbnb.Repository.PropertyRepository;
 
 @RequestMapping("/api/properties")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 @RestController
 
 public class PropertyController {
@@ -58,4 +58,16 @@ public class PropertyController {
 
         return new ResponseEntity<>(saveProperty, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public HttpStatus deleteProperty(@PathVariable("id") long id){
+        Property propertyData = propertyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Property", "id", id));
+
+        propertyRepository.delete(propertyData);
+
+        return HttpStatus.OK;
+    }
+
+
 }
