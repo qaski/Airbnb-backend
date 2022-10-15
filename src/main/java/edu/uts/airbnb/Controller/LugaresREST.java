@@ -2,8 +2,10 @@ package com.init.lugares.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 
-@RestController //clase como servicio 
+@RestController  
 
-@RequestMapping("Lugares") //En que url se expondra todos los metodos de este servicio
+@RequestMapping("Lugares") 
 public class LugaresREST {
 	
 	    @Autowired 
@@ -37,6 +39,17 @@ public class LugaresREST {
 			 }
 	 	}
 	
+		@PostMapping
+		public ResponseEntity<Lugares> createLugar(@RequestBody  Lugares lugares){
+			Lugares  newLugar = lugaresDAO.save(lugares);
+			return ResponseEntity.ok(newLugar);
+		}
+		
+		@DeleteMapping(value= "{lugaresId}")
+		public ResponseEntity<Void> deleteLugar(@PathVariable("lugaresId") Long lugaresId){
+			lugaresDAO.deleteById(lugaresId);
+			return ResponseEntity.ok(null);
+		}
 	
 		  @PutMapping
 		  public ResponseEntity<Lugares> updateLugares(@RequestBody Lugares lugares){
@@ -52,6 +65,8 @@ public class LugaresREST {
 			}
 			  
 		  }
+		  
+		 
 
 }
   
