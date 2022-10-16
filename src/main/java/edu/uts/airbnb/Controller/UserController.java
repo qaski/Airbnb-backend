@@ -24,6 +24,7 @@ try{
 }
 }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping (value = "/{id}/delete")
     private ResponseEntity<Void> Eliminar (@PathVariable Long id){
 servicesuser.delete(id);
