@@ -2,7 +2,7 @@ package edu.uts.airbnb.Models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Reverva")
+@Table(name = "Reserva")
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
