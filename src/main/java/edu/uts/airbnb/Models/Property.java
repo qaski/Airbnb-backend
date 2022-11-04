@@ -18,14 +18,18 @@ public class Property {
     @Column(name = "published")
     private boolean published;
 
+    @Column(name = "country")
+    private String country;
+
     public Property() {
 
     }
 
-    public Property(String title, String description, boolean published) {
+    public Property(String title, String description, boolean published, String country) {
         this.title = title;
         this.description = description;
         this.published = published;
+        this.country = country;
     }
 
     public long getId() {
@@ -54,6 +58,14 @@ public class Property {
 
     public void setPublished(boolean isPublished) {
         this.published = isPublished;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @Override

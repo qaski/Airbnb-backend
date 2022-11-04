@@ -33,7 +33,7 @@ public class PropertyController {
     public ResponseEntity<Property> createProperty(@RequestBody Property property) {
         try {
             Property _property = propertyRepository
-                    .save(new Property(property.getTitle(), property.getDescription(), false));
+                    .save(new Property(property.getTitle(), property.getDescription(), false, property.getCountry()));
             return new ResponseEntity<>(_property, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

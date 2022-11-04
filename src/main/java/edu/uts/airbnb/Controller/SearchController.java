@@ -17,13 +17,16 @@ public class SearchController {
     PropertyRepository propertyRepository;
 
     @GetMapping(value = "/")
-    public ResponseEntity<List<Property>> searchByTitle(@RequestParam String q){
+    public ResponseEntity<List<Property>> searchByTitle(@RequestParam String q, @RequestParam String country){
+        List<Property> properties = propertyRepository.findByTitleContainingAndCountry(q, country);
 
-        if (q.isBlank()) {
-            List<Property> properties = propertyRepository.findAll();
+        if (country.isBlank() && q.isBlank()) {
+            properties = propertyRepository.findAll();
+        } else if (country.isBlank()){
+            properties = propertyRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q, q);
+        } else if (q.isBlank()){
+            properties = propertyRepository.findByCountryContainingIgnoreCase(country);
         }
-
-        List<Property> properties = propertyRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q, q);
 
         return new ResponseEntity<>(properties, HttpStatus.OK);
     }
