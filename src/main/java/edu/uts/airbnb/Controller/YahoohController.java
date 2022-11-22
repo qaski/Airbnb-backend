@@ -17,7 +17,7 @@ import java.util.Optional;
 public class YahoohController {
 
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object[]> getPropertyById(@PathVariable("id") long id) {
+    public ResponseEntity<Object[]> getPropertyById(@PathVariable("id") String id) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-RapidAPI-Key", "76a731a4a2msh25af040a53ceb9bp12c452jsnae8858bbf0e5");
@@ -25,7 +25,7 @@ public class YahoohController {
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
-        String uri = "https://yahoo-finance15.p.rapidapi.com/api/yahoo/qu/quote/AAPL";
+        String uri = "https://yahoo-finance15.p.rapidapi.com/api/yahoo/qu/quote/"+id;
 
         Object[] results = restTemplate.exchange(
                 uri, HttpMethod.GET, requestEntity, Object[].class).getBody();
