@@ -1,9 +1,19 @@
 package edu.uts.airbnb.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Collections;
 
 @RestController
 public class api {
@@ -17,9 +27,14 @@ public class api {
 
     @GetMapping("/test")
     public Object test() {
-        String url = "https://api.crimeometer.com/v1/incidents/raw-data?lat=33.729610&lon=84.409736&distance=100m&datetime_ini=2020-12-01T15:53:00.000Z&datetime_end=2022-01-20T15:00:00.000Z&page=1";
-        Object forObject = restTemplate.getForObject(url, Object.class);
+        String url = "https://wft-geo-db.p.rapidapi.com/v1/geo/adminDivisions";
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-RapidAPI-Key", "d567afd758msh137dd6bf7812f8ap17616ajsn26a8cdf25c85");
+        headers.set("X-RapidAPI-Host", "wft-geo-db.p.rapidapi.com");
+        headers.set("content-type", "multipart/form-data; boundary=---011000010111000001101001");
+        HttpEntity <String> httpEntity = new HttpEntity<>("", headers);
+        Object forObject = restTemplate.exchange(url, HttpMethod.GET, httpEntity, Object.class);
         return  forObject;
-
     }
 }
